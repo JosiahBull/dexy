@@ -1,17 +1,36 @@
 # Dexy
 
-Dexy is a command line utility for recursively generating sha256/512 hashes of all files in a directory.
+Dexy is a command line utility for recursively generating sha256 hashes of all files in a directory.
 
-Dexy will output two JSON files, one a mapping of hashes to file path, the other list of all duplicate files that were found in the selected directory.
+Dexy will JSON file containing the hashes of all files that were found, note that on slower media such as hard drives the scan may take quote some time. 
 
-Note that Dexy has several limitations, feel free to submit a PR to fix them:
-- You must edit the source for mundane things, such as the number of threads
-- Relative file links are not allowed, they must be absolute
-- Duplicate files will match on two empty files
-- Panics on broken symlinks
-- Only tested on Linux
+If there are multiple files that have the same hash, they will be grouped together in a single entry
+
+## Example Usage
+```bash
+    cargo run --release -- --ignore-empty --load-file-attributes --name docs /home/$USER/Documents
+```
+## Example Output
+```json
+{
+  "3e155b0d8756c752021b64e8d39ac7d73dd9e451e55bdfc70d231af773c3b813": [
+    {
+      "hash": "3e155b0d8756c752021b64e8d39ac7d73dd9e451e55bdfc70d231af773c3b813",
+      "path": "/home/josiah/Documents/rust-chat-app/target/doc/itertools/structs/struct.PadUsing.html",
+      "attributes": {
+        "size": 405813,
+        "created_date": 1639433284,
+        "accessed_date": 1650427097,
+        "edit_date": 1639433284,
+        "file_type": "File"
+      }
+    }
+  ],
+ }
+```
 
 
+## Full Avaiable Options
 ```
 USAGE:
     dexy [OPTIONS] <START_DIRECTORY>...
@@ -20,10 +39,6 @@ ARGS:
     <START_DIRECTORY>...    List of directories to scan
 
 OPTIONS:
-    -e, --exclude <EXCLUDE>
-            NOT IMPLEMENTED: Any directory or file that matches this filter will be excluded,
-            supports regex to match against
-
     -h, --help
             Print help information
 
@@ -47,12 +62,6 @@ OPTIONS:
 
     -t, --thread-count <THREAD_COUNT>
             Number of threads to process default = number of cores [default: 16]
-
-    -u, --update-existing
-            NOT IMPLEMENTED: Update an existing scan with files that aren't already present. Will
-            attempt to check size and age of existing scanned files and rehash - but note that this
-            isn't perfect and it's possible that a file might be missed if it has the same size. If
-            this is a critical application, it is recommended that you rescan from scratch
 
     -V, --version
             Print version information
