@@ -47,7 +47,7 @@ struct Args {
     ignore_empty: bool,
 
     /// By default the program will exclude hidden files/folders, this will force it to include them.
-    #[clap(short, long)]
+    #[clap(long)]
     include_hidden: bool,
 
     /// Output size and other file information with the scan, note this makes an extra
