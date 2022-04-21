@@ -2,7 +2,7 @@
 
 Dexy is a command line utility for recursively generating sha256 hashes of all files in a directory.
 
-Dexy will JSON file containing the hashes of all files that were found, note that on slower media such as hard drives the scan may take quote some time. 
+Dexy will output aJSON file containing the hashes of all files that were found, note that on slower media such as hard drives the scan may take quite some time. 
 
 If there are multiple files that have the same hash, they will be grouped together in a single entry
 
